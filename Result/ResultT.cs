@@ -10,7 +10,7 @@ namespace ResultType
 
   private readonly string _error;
 
-  public string Error => GetErrorWithSuccessGuard(IsFailure ? _error);
+  public string Error => GetErrorWithSuccessGuard(IsFailure, _error);
 
   private readonly T _value;
 
