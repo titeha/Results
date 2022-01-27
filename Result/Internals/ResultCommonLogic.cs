@@ -1,6 +1,4 @@
-﻿using Result.Exceptions;
-
-namespace Result.Internals
+﻿namespace ResultType
 {
  internal static class ResultCommonLogic
  {
@@ -11,12 +9,12 @@ namespace Result.Internals
    if (isFailure)
    {
 	if (error == null || error is string && error.Equals(string.Empty))
-	 throw new ArgumentNullException();
+	 throw new ArgumentNullException(nameof(error), Result.Messages.ErrorObjectIsNotProvidedForFailure);
    }
    else
    {
 	if (!EqualityComparer<E>.Default.Equals(error, default))
-	 throw new ArgumentException();
+	 throw new ArgumentException(Result.Messages.ErrorObjectIsProvidedForSuccess, nameof(error));
    }
 
    return isFailure;
