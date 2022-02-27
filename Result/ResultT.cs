@@ -27,7 +27,7 @@ namespace ResultType
   {
    if (value is IResult<T> result)
    {
-	string resultError = result.IsFailure ? result.Error : string.Empty;
+	string resultError = result.IsFailure ? result.Error : null;
 	T resultValue = result.IsSuccess ? result.Value : default;
 
 	return new Result<T>(result.IsFailure, resultError, resultValue);

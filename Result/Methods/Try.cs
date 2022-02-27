@@ -36,7 +36,7 @@
    }
   }
 
-  public static Result<T> Try<T>(Func<T> func, Func<Exception, string> errorHandler = null)
+  public static Result<T> Try<T>(Func<T> func, Func<Exception, string>? errorHandler = null)
   {
    errorHandler ??= _defaultTryErrorHandler;
 
@@ -51,7 +51,7 @@
    }
   }
 
-  public static async Task<Result<T>> Try<T>(Func<Task<T>> func, Func<Exception, string> errorHandler = null)
+  public static async Task<Result<T>> Try<T>(Func<Task<T>> func, Func<Exception, string>? errorHandler = null)
   {
    errorHandler ??= _defaultTryErrorHandler;
 
