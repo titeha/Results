@@ -1,7 +1,7 @@
 ﻿namespace ResultType
 {
- public partial struct Result
- {
-  public static bool DefaultConfigureAwait;
- }
+  public partial struct Result
+  {
+    public static bool DefaultConfigureAwait;
+  }
 }

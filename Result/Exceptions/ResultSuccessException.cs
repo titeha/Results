@@ -1,7 +1,7 @@
 ﻿namespace ResultType
 {
- public class ResultSuccessException : Exception
- {
-  internal ResultSuccessException() : base(Result.Messages.ErrorIsInaccessibleForSuccess) { }
- }
+  public class ResultSuccessException : Exception
+  {
+    internal ResultSuccessException() : base(Result.Messages.ErrorIsInaccessibleForSuccess) { }
+  }
 }
