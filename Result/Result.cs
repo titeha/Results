@@ -8,17 +8,17 @@ namespace ResultType
 
     public bool IsSuccess => !IsFailure;
 
-    private readonly string _error;
+    private readonly string? _error;
 
-    public string Error => GetErrorWithSuccessGuard(IsFailure, _error);
+    public string? Error => GetErrorWithSuccessGuard(IsFailure, _error);
 
-    public Result(bool isFailure, string error)
+    public Result(bool isFailure, string? error)
     {
       IsFailure = ErrorStateGuard(isFailure, error);
       _error = error;
     }
 
-    public static implicit operator UnitResult<string>(Result result)
+    public static implicit operator UnitResult<string?>(Result result)
     {
       if (result.IsSuccess)
         return UnitResult.Success<string>();

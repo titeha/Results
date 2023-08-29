@@ -2,18 +2,15 @@
 {
   public class ResultFailureException : Exception
   {
-    public string Error { get; }
+    public string? Error { get; }
 
-    internal ResultFailureException(string error) : base(Result.Messages.ValueIsInaccessibleForFailure(error)) => Error = error;
+    internal ResultFailureException(string? error) : base(Result.Messages.ValueIsInaccessibleForFailure(error)) => Error = error;
   }
 
   public class ResultFailureException<E> : ResultFailureException
   {
-    public new E Error { get; }
+    public new E? Error { get; }
 
-    internal ResultFailureException(E error) : base(Result.Messages.ValueIsInaccessibleForFailure(error.ToString()))
-    {
-      Error = error;
-    }
+    internal ResultFailureException(E? error) : base(Result.Messages.ValueIsInaccessibleForFailure(error?.ToString())) => Error = error;
   }
 }

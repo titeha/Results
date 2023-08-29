@@ -14,7 +14,7 @@
 
   public interface IError<out E> : IResult
   {
-    E Error { get; }
+    E? Error { get; }
   }
 
   public interface IResult<out T, out E> : IResult, IValue<T>, IError<E> { }

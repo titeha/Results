@@ -10,7 +10,7 @@
 
       public static readonly string ErrorObjectIsProvidedForSuccess = "Вы попытались создать результат успеха, в котором не может быть ошибки, но конструктору был передан объект ошибки, отличный от нуля.";
 
-      public static string ValueIsInaccessibleForFailure(string error) => $"Вы попытались получить доступ к свойству Value с неудачным результатом. Неудачный результат не имеет никакого значения. Ошибка заключалась в: {error}";
+      public static string ValueIsInaccessibleForFailure(string? error) => $"Вы попытались получить доступ к свойству Value с неудачным результатом. Неудачный результат не имеет никакого значения. Ошибка заключалась в: {error ?? string.Empty}";
     }
   }
 }
