@@ -2,7 +2,7 @@
 
 namespace ResultType
 {
-  public partial struct Result<T, E> : IResult<T?, E?>
+  public readonly partial struct Result<T, E> : IResult<T?, E?>
   {
     public bool IsFailure { get; }
 
@@ -25,7 +25,7 @@ namespace ResultType
 
     public static implicit operator Result<T, E?>(T value)
     {
-      if (value is IResult<T?, E?> result)
+      if (value is IResult<T, E?> result)
       {
         E? resultError = result.IsFailure ? result.Error : default;
         T? resultValue = result.IsSuccess ? result.Value : default;
@@ -38,7 +38,7 @@ namespace ResultType
 
     public static implicit operator Result<T, E?>(E error)
     {
-      if (error is IResult<T?, E?> result)
+      if (error is IResult<T, E?> result)
       {
         E? resultError = result.IsFailure ? result.Error : default;
         T? resultValue = result.IsSuccess ? result.Value : default;
@@ -49,10 +49,10 @@ namespace ResultType
       return Result.Failure<T, E?>(error);
     }
 
-    public static implicit operator UnitResult<E?>(Result<T?, E?> result) => result.IsSuccess ? UnitResult.Success<E?>() : UnitResult.Failure(result.Error);
+    public static implicit operator UnitResult<E?>(Result<T, E?> result) => result.IsSuccess ? UnitResult.Success<E?>() : UnitResult.Failure(result.Error);
 
-    public static implicit operator bool(Result<T?, E?> result) => result.IsSuccess;
+    public static implicit operator bool(Result<T, E?> result) => result.IsSuccess;
 
-    public static explicit operator T?(Result<T?, E?> result) => result.IsSuccess ? result.Value : throw new ResultFailureException<E?>(result.Error);
+    public static explicit operator T?(Result<T, E?> result) => result.IsSuccess ? result.Value : throw new ResultFailureException<E?>(result.Error);
   }
 }

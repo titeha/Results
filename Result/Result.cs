@@ -6,7 +6,7 @@ namespace ResultType
   {
     public bool IsFailure { get; }
 
-    public bool IsSuccess => !IsFailure;
+    public readonly bool IsSuccess => !IsFailure;
 
     private readonly string? _error;
 
@@ -18,13 +18,7 @@ namespace ResultType
       _error = error;
     }
 
-    public static implicit operator UnitResult<string?>(Result result)
-    {
-      if (result.IsSuccess)
-        return UnitResult.Success<string>();
-      else
-        return UnitResult.Failure(result.Error);
-    }
+    public static implicit operator UnitResult<string?>(Result result) => result.IsSuccess ? UnitResult.Success<string>() : UnitResult.Failure(result.Error);
 
     public static implicit operator bool(Result result) => result.IsSuccess;
   }

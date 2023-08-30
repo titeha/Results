@@ -6,11 +6,11 @@ namespace ResultType
   {
     public bool IsFailure { get; }
 
-    public bool IsSuccess => !IsFailure;
+    public readonly bool IsSuccess => !IsFailure;
 
     private readonly E? _error;
 
-    public E? Error => GetErrorWithSuccessGuard(IsFailure, _error);
+    public readonly E? Error => GetErrorWithSuccessGuard(IsFailure, _error);
 
     internal UnitResult(bool isFailure, E? error)
     {
@@ -32,7 +32,7 @@ namespace ResultType
     public static implicit operator bool(UnitResult<E?> result) => result.IsSuccess;
   }
 
-  public static partial class UnitResult
+  public struct UnitResult
   {
     public static UnitResult<E?> Failure<E>(E error) => new(true, error);
 
