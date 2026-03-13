@@ -1,14 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net7.0;net8.0;net9.0</TargetFrameworks>
+    <TargetFrameworks>net7.0;net8.0;net9.0;net10.0</TargetFrameworks>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <BaseOutputPath>..\bin\Result</BaseOutputPath>
     <RootNamespace>ResultType</RootNamespace>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <LangVersion>latest</LangVersion>
-    <Version>1.2.4</Version>
+    <Version>1.2.5</Version>
     <Authors>Artemy Sobolev</Authors>
     <Copyright>Artemy Sobolev</Copyright>
     <RepositoryUrl>https://github.com/titeha/Results</RepositoryUrl>
