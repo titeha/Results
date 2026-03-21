@@ -2,11 +2,11 @@
 
 namespace ResultType
 {
-  public partial struct Result : IResult
+  public readonly partial struct Result : IResult
   {
     public bool IsFailure { get; }
 
-    public readonly bool IsSuccess => !IsFailure;
+    public bool IsSuccess => !IsFailure;
 
     private readonly string? _error;
 
@@ -18,7 +18,8 @@ namespace ResultType
       _error = error;
     }
 
-    public static implicit operator UnitResult<string?>(Result result) => result.IsSuccess ? UnitResult.Success<string>() : UnitResult.Failure(result.Error);
+    public static implicit operator UnitResult<string?>(Result result) =>
+      result.IsSuccess ? UnitResult.Success<string>() : UnitResult.Failure(result.Error);
 
     public static implicit operator bool(Result result) => result.IsSuccess;
   }

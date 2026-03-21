@@ -2,15 +2,15 @@
 
 namespace ResultType
 {
-  public partial struct UnitResult<E> : IUnitResult<E?>
+  public readonly partial struct UnitResult<E> : IUnitResult<E?>
   {
     public bool IsFailure { get; }
 
-    public readonly bool IsSuccess => !IsFailure;
+    public bool IsSuccess => !IsFailure;
 
     private readonly E? _error;
 
-    public readonly E? Error => GetErrorWithSuccessGuard(IsFailure, _error);
+    public E? Error => GetErrorWithSuccessGuard(IsFailure, _error);
 
     internal UnitResult(bool isFailure, E? error)
     {
