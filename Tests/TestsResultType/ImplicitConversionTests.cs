@@ -176,7 +176,7 @@ namespace TestsResultType
     public void Implicit_conversion_Result_TE_Seccess_to_bool_true_value()
     {
       Result<int, MyError> result = Result.Success<int, MyError>(42);
-      bool boolResult = result;
+      bool boolResult = result!;
 
       boolResult.Should().BeTrue();
       result.Value.Should().Be(42);
@@ -197,16 +197,16 @@ namespace TestsResultType
     {
       Result<int, MyError> result = Result.Success<int, MyError>(42);
 
-      int value = (int)result;
+      int value = (int)result!;
 
       value.Should().Be(42);
     }
 
-    private static IResult<ICovariantResult> GetCovariantResultT() => Result.Success(new CovariantResult());
+    private static Result<CovariantResult> GetCovariantResultT() => Result.Success(new CovariantResult());
 
-    private static IResult<ICovariantResult, IMyError> GetCovariantSuccessResultTE() => Result.Success<CovariantResult, MyError>(new CovariantResult());
+    private static Result<CovariantResult, MyError> GetCovariantSuccessResultTE() => Result.Success<CovariantResult, MyError>(new CovariantResult());
 
-    private static IResult<ICovariantResult, IMyError> GetCovariantFailureResultTE() => Result.Failure<CovariantResult, MyError>(new MyError());
+    private static Result<CovariantResult, MyError> GetCovariantFailureResultTE() => Result.Failure<CovariantResult, MyError>(new MyError());
 
     private interface ICovariantResult { }
 
