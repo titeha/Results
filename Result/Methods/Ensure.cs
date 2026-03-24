@@ -9,7 +9,7 @@ public readonly partial struct Result
     if (IsFailure)
       return this;
 
-    return predicate() ? this : Result.Failure(error);
+    return predicate() ? this : Failure(error);
   }
 }
 
@@ -41,7 +41,7 @@ public readonly partial struct Result<T, E>
 
 public readonly partial struct UnitResult<E>
 {
-  public readonly UnitResult<E> Ensure(Func<bool> predicate, E? error)
+  public readonly UnitResult<E?> Ensure(Func<bool> predicate, E? error)
   {
     ArgumentNullException.ThrowIfNull(predicate);
 

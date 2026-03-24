@@ -13,7 +13,7 @@ namespace TestsResultType
     [Fact]
     public void Success_argument_is_null_Success_result_expected()
     {
-      Result result = Result.Success<string>(null);
+      Result result = Result.Success<string>(null!);
 
       result.IsSuccess.Should().BeTrue();
     }

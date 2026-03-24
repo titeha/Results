@@ -13,10 +13,10 @@ namespace TestsResultType
     [Fact]
     public void Implicit_conversion_of_dynamic_result()
     {
-      Result<dynamic> result = Result.Success<dynamic>((dynamic)"result");
+      Result<dynamic> result = Result.Success<dynamic>("result");
 
-      Type type = result.Value.GetType();
-      type.Should().Be(typeof(string));
+      Type type = result.Value!.GetType();
+      type.Should().Be<string>();
     }
 
     [Fact]
@@ -55,9 +55,7 @@ namespace TestsResultType
     [Fact]
     public void Implicit_conversion_E_is_converted_to_Failure_unit_of_E()
     {
-      int error = 42;
-
-      UnitResult<int> result = error;
+      UnitResult<int> result = 42;
 
       result.IsFailure.Should().BeTrue();
       result.Error.Should().Be(42);
@@ -71,7 +69,7 @@ namespace TestsResultType
 
       var cast = (Result<dynamic>)result;
 
-      string castValue = cast.Value;
+      string castValue = cast.Value!;
       castValue.Should().Be(value);
     }
 
@@ -83,16 +81,14 @@ namespace TestsResultType
 
       var cast = (Result<dynamic, MyError>)result;
 
-      string castValue = cast.Value;
+      string castValue = cast.Value!;
       castValue.Should().Be(value);
     }
 
     [Fact]
     public void Result_can_be_cast_to_UnitResult()
     {
-      Result result = Result.Failure("Error");
-
-      UnitResult<string> unitResult = result;
+      UnitResult<string> unitResult = Result.Failure("Error")!;
 
       unitResult.IsFailure.Should().BeTrue();
       unitResult.Error.Should().Be("Error");
@@ -101,9 +97,7 @@ namespace TestsResultType
     [Fact]
     public void Result_T_can_be_cast_to_UnitResult()
     {
-      Result<MyClass> result = Result.Failure<MyClass>("Error");
-
-      UnitResult<string> unitResult = result;
+      UnitResult<string> unitResult = Result.Failure<MyClass>("Error")!;
 
       unitResult.IsFailure.Should().BeTrue();
       unitResult.Error.Should().Be("Error");
@@ -113,9 +107,7 @@ namespace TestsResultType
     public void Result_TE_can_be_cast_to_UnitResult()
     {
       var error = new MyError();
-      Result<MyClass, MyError> result = Result.Failure<MyClass, MyError>(error);
-
-      UnitResult<MyError> unitResult = result;
+      UnitResult<MyError> unitResult = Result.Failure<MyClass, MyError>(error)!;
 
       unitResult.IsFailure.Should().BeTrue();
       unitResult.Error.Should().Be(error);
@@ -129,28 +121,28 @@ namespace TestsResultType
 
       var cast = (Result<string, dynamic>)result;
 
-      MyError castError = cast.Error;
+      MyError castError = cast.Error!;
       castError.Should().Be(error);
     }
 
     [Fact]
     public void IResult_T_can_be_used_covarintly()
     {
-      IResult<ICovariantResult> covariantResult = GetCovariantResultT();
+      Result<CovariantResult> covariantResult = GetCovariantResultT();
       Assert.IsType<CovariantResult>(covariantResult.Value);
     }
 
     [Fact]
     public void Value_in_IResult_TE_value_can_be_used_covariantly()
     {
-      IResult<ICovariantResult, IMyError> covariantResult = GetCovariantSuccessResultTE();
+      Result<CovariantResult, MyError> covariantResult = GetCovariantSuccessResultTE();
       Assert.IsType<CovariantResult>(covariantResult.Value);
     }
 
     [Fact]
     public void Error_in_IResult_TE_can_be_used_covariantly()
     {
-      IResult<ICovariantResult, IMyError> covariantResult = GetCovariantFailureResultTE();
+      Result<CovariantResult, MyError> covariantResult = GetCovariantFailureResultTE();
       Assert.IsType<MyError>(covariantResult.Error);
     }
 

@@ -66,11 +66,11 @@ public partial struct Result
     }
 
     return failures is null
-      ? Success<T[], E[]>(values.ToArray())
-      : Failure<T[], E[]>(failures.ToArray());
+      ? Success<T[], E[]>([.. values])
+      : Failure<T[], E[]>([.. failures]);
   }
 
-  public static UnitResult<E[]> Combine<E>(IEnumerable<UnitResult<E>> results)
+  public static UnitResult<E[]?> Combine<E>(IEnumerable<UnitResult<E>> results)
   {
     ArgumentNullException.ThrowIfNull(results);
 

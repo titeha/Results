@@ -199,7 +199,7 @@ public class FunctionalCompositionTests
   {
     UnitResult<string> source = UnitResult.Success<string>()!;
 
-    UnitResult<string> ensured = source.Ensure(() => false, "boom");
+    UnitResult<string> ensured = source.Ensure(() => false, "boom")!;
 
     ensured.IsFailure.Should().BeTrue();
     ensured.Error.Should().Be("boom");

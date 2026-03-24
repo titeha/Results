@@ -113,11 +113,11 @@ public class CombineTests
   {
     UnitResult<MyError>[] results =
     [
-      UnitResult.Success<MyError>(),
-      UnitResult.Success<MyError>(),
+      UnitResult.Success<MyError>()!,
+      UnitResult.Success<MyError>()!,
     ];
 
-    UnitResult<MyError[]> combined = Result.Combine(results);
+    UnitResult<MyError[]> combined = Result.Combine(results)!;
 
     combined.IsSuccess.Should().BeTrue();
     combined.IsFailure.Should().BeFalse();
@@ -128,12 +128,12 @@ public class CombineTests
   {
     UnitResult<MyError>[] results =
     [
-      UnitResult.Success<MyError>(),
-      UnitResult.Failure(new MyError("A")),
-      UnitResult.Failure(new MyError("B")),
+      UnitResult.Success<MyError>()!,
+      UnitResult.Failure(new MyError("A"))!,
+      UnitResult.Failure(new MyError("B"))!,
     ];
 
-    UnitResult<MyError[]> combined = Result.Combine(results);
+    UnitResult<MyError[]> combined = Result.Combine(results)!;
 
     combined.IsFailure.Should().BeTrue();
     combined.Error.Should().NotBeNull();

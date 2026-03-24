@@ -43,7 +43,7 @@ namespace TestsResultType
     [Fact]
     public void Can_create_a_unit_resut_using_UnitResult_entry_point()
     {
-      UnitResult<MyErrorClass> result = UnitResult.Success<MyErrorClass>();
+      UnitResult<MyErrorClass> result = UnitResult.Success<MyErrorClass>()!;
 
       result.IsFailure.Should().Be(false);
       result.IsSuccess.Should().Be(true);
@@ -59,7 +59,7 @@ namespace TestsResultType
     [Fact]
     public void Can_create_without_Value()
     {
-      Result<MyClass> result = Result.Success((MyClass)null);
+      Result<MyClass> result = Result.Success((MyClass)null!);
 
       result.IsSuccess.Should().BeTrue();
       result.Value.Should().BeNull();
@@ -70,7 +70,7 @@ namespace TestsResultType
     {
       Result result = Result.Success();
 
-      Action action = () => { string _error = result.Error; };
+      Action action = () => { string _error = result.Error!; };
 
       action.Should().Throw<ResultSuccessException>();
     }
@@ -80,7 +80,7 @@ namespace TestsResultType
     {
       Result<MyClass, MyErrorClass> result = Result.Success<MyClass, MyErrorClass>(new MyClass());
 
-      Action action = () => { MyErrorClass _error = result.Error; };
+      Action action = () => { MyErrorClass _error = result.Error!; };
 
       action.Should().Throw<ResultSuccessException>();
     }
@@ -90,7 +90,7 @@ namespace TestsResultType
     {
       UnitResult<MyErrorClass> result = Result.Success<MyErrorClass>();
 
-      Action action = () => { MyErrorClass _error = result.Error; };
+      Action action = () => { MyErrorClass _error = result.Error!; };
 
       action.Should().Throw<ResultSuccessException>();
     }

@@ -37,7 +37,7 @@ namespace TestsResultType
     {
       var _error = new MyErrorClass();
 
-      UnitResult<MyErrorClass> result = UnitResult.Failure(_error);
+      UnitResult<MyErrorClass> result = UnitResult.Failure(_error)!;
 
       result.Error.Should().Be(_error);
       result.IsFailure.Should().Be(true);
@@ -49,7 +49,7 @@ namespace TestsResultType
     {
       Result<MyClass> result = Result.Failure<MyClass>(_errorMessage);
 
-      Action action = () => { MyClass myClass = result.Value; };
+      Action action = () => { MyClass myClass = result.Value!; };
 
       action.Should().Throw<ResultFailureException>().WithMessage("Вы попытались получить доступ к свойству Value с неудачным результатом. Неудачный результат не имеет никакого значения. Ошибка заключалась в: Error message");
     }
@@ -59,7 +59,7 @@ namespace TestsResultType
     {
       Result<MyClass, MyErrorClass> result = Result.Failure<MyClass, MyErrorClass>(new MyErrorClass());
 
-      Action action = () => { MyClass myClass = result.Value; };
+      Action action = () => { MyClass myClass = result.Value!; };
 
       action.Should().Throw<ResultFailureException<MyErrorClass>>();
     }
@@ -67,11 +67,11 @@ namespace TestsResultType
     [Fact]
     public void Cannot_create_without_error_message()
     {
-      Action action1 = () => { Result.Failure(null); };
-      Action action2 = () => { Result.Failure(string.Empty); };
-      Action action3 = () => { Result.Failure<MyClass>(null); };
-      Action action4 = () => { Result.Failure<MyClass>(string.Empty); };
-      Action action5 = () => { UnitResult.Failure<MyClass>(null); };
+      Action action1 = () => Result.Failure(null);
+      Action action2 = () => Result.Failure(string.Empty);
+      Action action3 = () => Result.Failure<MyClass>(null);
+      Action action4 = () => Result.Failure<MyClass>(string.Empty);
+      Action action5 = () => UnitResult.Failure<MyClass>(null!);
 
       action1.Should().Throw<ArgumentNullException>();
       action2.Should().Throw<ArgumentNullException>();
