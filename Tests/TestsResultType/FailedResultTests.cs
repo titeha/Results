@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 
 using ResultType;
+using ResultType.Exceptions;
 
 using System;
 
@@ -80,8 +81,8 @@ namespace TestsResultType
       action5.Should().Throw<ArgumentNullException>();
     }
 
-    private class MyClass { }
+    private class MyClass;
 
-    private class MyErrorClass { }
+    private class MyErrorClass;
   }
 }

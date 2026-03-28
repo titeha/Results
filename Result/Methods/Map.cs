@@ -2,18 +2,24 @@ namespace ResultType;
 
 public readonly partial struct Result
 {
+  /// <summary>
+  /// Преобразует успешный результат без значения в успешный результат со значением.
+  /// </summary>
   public readonly Result<T> Map<T>(Func<T> mapper)
   {
     ArgumentNullException.ThrowIfNull(mapper);
 
     return IsSuccess
-      ? Result.Success(mapper())
-      : Result.Failure<T>(Error);
+      ? Success(mapper())
+      : Failure<T>(Error);
   }
 }
 
 public readonly partial struct Result<T>
 {
+  /// <summary>
+  /// Преобразует успешный результат без значения в успешный результат со значением.
+  /// </summary>
   public readonly Result<K> Map<K>(Func<T?, K> mapper)
   {
     ArgumentNullException.ThrowIfNull(mapper);
@@ -26,6 +32,9 @@ public readonly partial struct Result<T>
 
 public readonly partial struct Result<T, E>
 {
+  /// <summary>
+  /// Преобразует успешный результат без значения в успешный результат со значением.
+  /// </summary>
   public readonly Result<K, E> Map<K>(Func<T?, K> mapper)
   {
     ArgumentNullException.ThrowIfNull(mapper);
@@ -38,6 +47,9 @@ public readonly partial struct Result<T, E>
 
 public readonly partial struct UnitResult<E>
 {
+  /// <summary>
+  /// Преобразует успешный результат без значения в успешный результат со значением.
+  /// </summary>
   public readonly Result<T, E> Map<T>(Func<T> mapper)
   {
     ArgumentNullException.ThrowIfNull(mapper);

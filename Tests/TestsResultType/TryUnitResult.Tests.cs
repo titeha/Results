@@ -23,7 +23,7 @@ public class TryUnitResultTests : TryTestBase
   [Fact]
   public void ResultTry_E_execute_action_failed_failed_result_expected()
   {
-    UnitResult<E?> result = Result.Try(Throwing_Action, ErrorHandlerE);
+    UnitResult<E?> result = Result.Try(TryTestBase.Throwing_Action, ErrorHandlerE);
 
     result.IsFailure.Should().BeTrue();
     result.Error.Should().Be(E.Value);
@@ -42,7 +42,7 @@ public class TryUnitResultTests : TryTestBase
   [Fact]
   public async Task ResultTry_Async_E_execute_action_failed_failed_result_expected()
   {
-    UnitResult<E?> result = await Result.Try(Throwing_Func_Task, ErrorHandlerE);
+    UnitResult<E?> result = await Result.Try(TryTestBase.Throwing_Func_Task, ErrorHandlerE);
 
     result.IsFailure.Should().BeTrue();
     result.Error.Should().Be(E.Value);

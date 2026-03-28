@@ -10,7 +10,7 @@ namespace TestsResultType
       FuncExecuted = false;
     }
 
-    protected static readonly Exception Exception = new Exception(ErrorMessage);
+    protected static readonly Exception Exception = new(ErrorMessage);
     protected const string ErrorHandlerMessage = "Error message from error handler";
     protected static readonly Func<Exception, string> ErrorHandler = exc => ErrorHandlerMessage;
     protected static readonly Func<Exception, E> ErrorHandlerE = exc => E.Value;
@@ -18,12 +18,17 @@ namespace TestsResultType
     protected bool FuncExecuted;
 
     protected void Action() => FuncExecuted = true;
+
     protected void Action_T(T _) => FuncExecuted = true;
 
-    protected T Throwing_Func_T() => throw Exception;
-    protected K Throwing_Func_T_K(T _) => throw Exception;
-    protected void Throwing_Action() => throw Exception;
-    protected void Throwing_Action_T(T _) => throw Exception;
+    protected static T Throwing_Func_T() => throw Exception;
+
+    protected static K Throwing_Func_T_K(T _) => throw Exception;
+
+    protected static void Throwing_Action() => throw Exception;
+
+    protected static void Throwing_Action_T(T _) => throw Exception;
+
     protected T Func_T()
     {
       FuncExecuted = true;
@@ -35,7 +40,7 @@ namespace TestsResultType
       FuncExecuted = true;
       return Task.CompletedTask;
     }
-    protected Task Throwing_Func_Task() => Exception.AsTask();
+    protected static Task Throwing_Func_Task() => Exception.AsTask();
 
     protected Task<T> Func_Task_T()
     {
@@ -43,6 +48,6 @@ namespace TestsResultType
       return T.Value.AsTask();
     }
 
-    protected Task<T> Throwing_Func_Task_T() => Exception.AsTask<T>();
+    protected static Task<T> Throwing_Func_Task_T() => Exception.AsTask<T>();
   }
 }

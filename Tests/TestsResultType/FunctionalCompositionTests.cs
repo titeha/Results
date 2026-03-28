@@ -153,7 +153,7 @@ public class FunctionalCompositionTests
     Result<int> source = Result.Failure<int>("boom");
     int captured = 0;
 
-    Result<int> tapped = source.Tap(x => captured = 1);
+    Result<int> tapped = source.Tap(_ => captured = 1);
 
     tapped.IsFailure.Should().BeTrue();
     captured.Should().Be(0);

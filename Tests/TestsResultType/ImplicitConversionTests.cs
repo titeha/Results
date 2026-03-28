@@ -2,212 +2,215 @@
 
 using FluentAssertions;
 
+using Microsoft.CSharp.RuntimeBinder;
+
 using ResultType;
 
 using Xunit;
 
-namespace TestsResultType
+namespace TestsResultType;
+
+public class ImplicitConversionTests
 {
-  public class ImplicitConversionTests
+  [Fact]
+  public void Result_of_dynamic_cannot_be_cast_to_other_generic_result()
   {
-    [Fact]
-    public void Implicit_conversion_of_dynamic_result()
+    dynamic source = Result.Success("test");
+
+    Action act = () =>
     {
-      Result<dynamic> result = Result.Success<dynamic>("result");
+      Result<object> _ = source;
+    };
 
-      Type type = result.Value!.GetType();
-      type.Should().Be<string>();
-    }
-
-    [Fact]
-    public void Implicit_conversion_T_is_converted_to_Success_result_of_T()
-    {
-      const string value = "result";
-
-      Result<string> result = value;
-
-      result.IsSuccess.Should().BeTrue();
-      result.Value.Should().Be(value);
-    }
-
-    [Fact]
-    public void Implicit_conversion_T_is_converted_to_Success_result_of_T_E()
-    {
-      const string value = "result";
-
-      Result<string, int> result = value;
-
-      result.IsSuccess.Should().BeTrue();
-      result.Value.Should().Be(value);
-    }
-
-    [Fact]
-    public void Implicit_conversion_E_is_converted_to_Failure_result_of_T_E()
-    {
-      const int value = 42;
-
-      Result<string, int> result = value;
-
-      result.IsFailure.Should().BeTrue();
-      result.Error.Should().Be(value);
-    }
-
-    [Fact]
-    public void Implicit_conversion_E_is_converted_to_Failure_unit_of_E()
-    {
-      UnitResult<int> result = 42;
-
-      result.IsFailure.Should().BeTrue();
-      result.Error.Should().Be(42);
-    }
-
-    [Fact]
-    public void Result_of_dynamic_can_be_cast_as_dynamic_result()
-    {
-      dynamic value = "test";
-      dynamic result = Result.Success(value);
-
-      var cast = (Result<dynamic>)result;
-
-      string castValue = cast.Value!;
-      castValue.Should().Be(value);
-    }
-
-    [Fact]
-    public void Value_in_Result_TE_can_be_cast_to_dynamic()
-    {
-      dynamic value = "test";
-      dynamic result = Result.Success<string, MyError>(value);
-
-      var cast = (Result<dynamic, MyError>)result;
-
-      string castValue = cast.Value!;
-      castValue.Should().Be(value);
-    }
-
-    [Fact]
-    public void Result_can_be_cast_to_UnitResult()
-    {
-      UnitResult<string> unitResult = Result.Failure("Error")!;
-
-      unitResult.IsFailure.Should().BeTrue();
-      unitResult.Error.Should().Be("Error");
-    }
-
-    [Fact]
-    public void Result_T_can_be_cast_to_UnitResult()
-    {
-      UnitResult<string> unitResult = Result.Failure<MyClass>("Error")!;
-
-      unitResult.IsFailure.Should().BeTrue();
-      unitResult.Error.Should().Be("Error");
-    }
-
-    [Fact]
-    public void Result_TE_can_be_cast_to_UnitResult()
-    {
-      var error = new MyError();
-      UnitResult<MyError> unitResult = Result.Failure<MyClass, MyError>(error)!;
-
-      unitResult.IsFailure.Should().BeTrue();
-      unitResult.Error.Should().Be(error);
-    }
-
-    [Fact]
-    public void Error_in_Result_TE_can_be_cast_to_dynamic()
-    {
-      dynamic error = new MyError();
-      dynamic result = Result.Failure<string, MyError>(error);
-
-      var cast = (Result<string, dynamic>)result;
-
-      MyError castError = cast.Error!;
-      castError.Should().Be(error);
-    }
-
-    [Fact]
-    public void IResult_T_can_be_used_covarintly()
-    {
-      Result<CovariantResult> covariantResult = GetCovariantResultT();
-      Assert.IsType<CovariantResult>(covariantResult.Value);
-    }
-
-    [Fact]
-    public void Value_in_IResult_TE_value_can_be_used_covariantly()
-    {
-      Result<CovariantResult, MyError> covariantResult = GetCovariantSuccessResultTE();
-      Assert.IsType<CovariantResult>(covariantResult.Value);
-    }
-
-    [Fact]
-    public void Error_in_IResult_TE_can_be_used_covariantly()
-    {
-      Result<CovariantResult, MyError> covariantResult = GetCovariantFailureResultTE();
-      Assert.IsType<MyError>(covariantResult.Error);
-    }
-
-    [Fact]
-    public void Implicit_conversion_Result_Success_to_bool_true_value()
-    {
-      bool result = Result.Success();
-
-      result.Should().BeTrue();
-    }
-
-    [Fact]
-    public void Implicit_conversion_Result_T_Success_to_bool_true_value()
-    {
-      Result<int> result = Result.Success<int>(42);
-      bool boolResult = result;
-
-      boolResult.Should().BeTrue();
-      result.Value.Should().Be(42);
-    }
-
-    [Fact]
-    public void Implicit_conversion_Result_TE_Seccess_to_bool_true_value()
-    {
-      Result<int, MyError> result = Result.Success<int, MyError>(42);
-      bool boolResult = result!;
-
-      boolResult.Should().BeTrue();
-      result.Value.Should().Be(42);
-    }
-
-    [Fact]
-    public void Explicit_conversion_Result_T_converted_to_T()
-    {
-      Result<int> result = Result.Success(42);
-
-      int value = (int)result;
-
-      value.Should().Be(42);
-    }
-
-    [Fact]
-    public void Explicit_conversion_Result_TE_converted_to_T()
-    {
-      Result<int, MyError> result = Result.Success<int, MyError>(42);
-
-      int value = (int)result!;
-
-      value.Should().Be(42);
-    }
-
-    private static Result<CovariantResult> GetCovariantResultT() => Result.Success(new CovariantResult());
-
-    private static Result<CovariantResult, MyError> GetCovariantSuccessResultTE() => Result.Success<CovariantResult, MyError>(new CovariantResult());
-
-    private static Result<CovariantResult, MyError> GetCovariantFailureResultTE() => Result.Failure<CovariantResult, MyError>(new MyError());
-
-    private interface ICovariantResult { }
-
-    private interface IMyError { }
-
-    private class MyError : IMyError { }
-
-    private class CovariantResult : ICovariantResult { }
-
-    private class MyClass { }
+    act.Should().Throw<RuntimeBinderException>();
   }
+
+  [Fact]
+  public void Result_TE_value_of_dynamic_cannot_be_cast_to_other_generic_result()
+  {
+    dynamic source = Result.Success<string, MyError?>("test");
+
+    Action act = () =>
+    {
+      Result<object, MyError?> _ = source;
+    };
+
+    act.Should().Throw<RuntimeBinderException>();
+  }
+
+  [Fact]
+  public void Result_TE_error_of_dynamic_cannot_be_cast_to_other_generic_result()
+  {
+    dynamic source = Result.Failure<string, MyError?>(new MyError());
+
+    Action act = () =>
+    {
+      Result<string, object> _ = source;
+    };
+
+    act.Should().Throw<RuntimeBinderException>();
+  }
+
+  [Fact]
+  public void Result_T_value_can_be_upcast_explicitly_via_map()
+  {
+    Result<string> source = Result.Success("test");
+
+    Result<object> actual = source.Map(value => (object)value!);
+
+    actual.IsSuccess.Should().BeTrue();
+    actual.Value.Should().Be("test");
+  }
+
+  [Fact]
+  public void Result_TE_value_can_be_upcast_explicitly_via_map()
+  {
+    Result<string, MyError> source = Result.Success<string, MyError>("test");
+
+    Result<object, MyError> actual = source.Map(value => (object)value!);
+
+    actual.IsSuccess.Should().BeTrue();
+    actual.Value.Should().Be("test");
+  }
+
+  [Fact]
+  public void Result_TE_error_can_be_upcast_explicitly_via_map_error_to()
+  {
+    var error = new MyError();
+    Result<string, MyError> source = Result.Failure<string, MyError>(error);
+
+    Result<string, object> actual = source.MapErrorTo<object>(e => e!);
+
+    actual.IsFailure.Should().BeTrue();
+    actual.Error.Should().Be(error);
+  }
+
+  [Fact]
+  public void IResult_T_can_be_used_covariantly()
+  {
+    IResult<ICovariantResult> covariantResult = Result.Success(new CovariantResult());
+
+    covariantResult.IsSuccess.Should().BeTrue();
+    covariantResult.Value.Should().BeOfType<CovariantResult>();
+  }
+
+  [Fact]
+  public void IResult_TE_value_can_be_used_covariantly()
+  {
+    IResult<ICovariantResult, string> covariantResult =
+        Result.Success<ICovariantResult, string>(new CovariantResult());
+
+    covariantResult.IsSuccess.Should().BeTrue();
+    covariantResult.Value.Should().BeOfType<CovariantResult>();
+  }
+
+  [Fact]
+  public void IResult_TE_error_can_be_used_covariantly()
+  {
+    IResult<string, IMyError> covariantResult =
+        Result.Failure<string, MyError?>(new MyError());
+
+    covariantResult.IsFailure.Should().BeTrue();
+    covariantResult.Error.Should().BeOfType<MyError?>();
+  }
+
+  [Fact]
+  public void Implicit_conversion_Result_success_to_bool_returns_true()
+  {
+    bool actual = Result.Success();
+
+    actual.Should().BeTrue();
+  }
+
+  [Fact]
+  public void Implicit_conversion_Result_failure_to_bool_returns_false()
+  {
+    bool actual = Result.Failure("boom");
+
+    actual.Should().BeFalse();
+  }
+
+  [Fact]
+  public void Implicit_conversion_Result_T_success_to_bool_returns_true()
+  {
+    Result<int> result = Result.Success(42);
+
+    bool actual = result;
+
+    actual.Should().BeTrue();
+    result.Value.Should().Be(42);
+  }
+
+  [Fact]
+  public void Implicit_conversion_Result_T_failure_to_bool_returns_false()
+  {
+    Result<int> result = Result.Failure<int>("boom");
+
+    bool actual = result;
+
+    actual.Should().BeFalse();
+    result.Error.Should().Be("boom");
+  }
+
+  [Fact]
+  public void Implicit_conversion_Result_TE_success_to_bool_returns_true()
+  {
+    Result<int, MyError?> result = Result.Success<int, MyError?>(42);
+
+    bool actual = result;
+
+    actual.Should().BeTrue();
+    result.Value.Should().Be(42);
+  }
+
+  [Fact]
+  public void Implicit_conversion_Result_TE_failure_to_bool_returns_false()
+  {
+    var error = new MyError();
+    Result<int, MyError?> result = Result.Failure<int, MyError?>(error);
+
+    bool actual = result;
+
+    actual.Should().BeFalse();
+    result.Error.Should().Be(error);
+  }
+
+  [Fact]
+  public void Implicit_conversion_UnitResult_success_to_bool_returns_true()
+  {
+    bool actual = UnitResult.Success<MyError?>();
+
+    actual.Should().BeTrue();
+  }
+
+  [Fact]
+  public void Implicit_conversion_UnitResult_failure_to_bool_returns_false()
+  {
+    var error = new MyError();
+    UnitResult<MyError?> result = UnitResult.Failure(error);
+
+    bool actual = result;
+
+    actual.Should().BeFalse();
+    result.Error.Should().Be(error);
+  }
+
+  [Fact]
+  public void Result_of_bool_success_false_still_converts_to_true_in_if_semantics()
+  {
+    Result<bool> result = Result.Success(false);
+
+    bool actual = result;
+
+    actual.Should().BeTrue();
+    result.Value.Should().BeFalse();
+  }
+
+  private interface ICovariantResult;
+
+  private interface IMyError;
+
+  private class MyError : IMyError;
+
+  private class CovariantResult : ICovariantResult;
 }

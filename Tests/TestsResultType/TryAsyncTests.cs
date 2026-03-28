@@ -22,7 +22,7 @@ namespace TestsResultType
     [Fact]
     public async Task ResultTry_Async_execute_action_failed_without_error_handler_failed_result_expected()
     {
-      var result = await Result.Try(Throwing_Func_Task);
+      var result = await Result.Try(TryTestBase.Throwing_Func_Task);
 
       result.IsFailure.Should().Be(true);
       result.Error.Should().Be(ErrorMessage);
@@ -31,7 +31,7 @@ namespace TestsResultType
     [Fact]
     public async Task ResultTry_Async_execute_action_failed_with_error_handler_failed_result_expected()
     {
-      var result = await Result.Try(Throwing_Func_Task, ErrorHandler);
+      var result = await Result.Try(TryTestBase.Throwing_Func_Task, ErrorHandler);
 
       result.IsFailure.Should().Be(true);
       result.Error.Should().Be(ErrorHandlerMessage);
@@ -50,7 +50,7 @@ namespace TestsResultType
     [Fact]
     public async Task ResultTry_Async_T_E_execute_function_failed_without_error_handler_failed_result_expected()
     {
-      var result = await Result.Try(Throwing_Func_Task_T, ErrorHandlerE);
+      var result = await Result.Try(TryTestBase.Throwing_Func_Task_T, ErrorHandlerE);
 
       result.IsFailure.Should().Be(true);
       result.Error.Should().Be(E.Value);
@@ -59,7 +59,7 @@ namespace TestsResultType
     [Fact]
     public async Task ResultTry_Async_T_E_execute_function_failed_with_error_handler_failed_result_expected()
     {
-      var result = await Result.Try(Throwing_Func_Task_T, ErrorHandlerE);
+      var result = await Result.Try(TryTestBase.Throwing_Func_Task_T, ErrorHandlerE);
 
       result.IsFailure.Should().Be(true);
       result.Error.Should().Be(E.Value);

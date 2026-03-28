@@ -2,6 +2,12 @@
 
 public partial struct Result
 {
+  /// <summary>
+  /// Объединяет несколько результатов без значений в один итоговый результат.
+  /// </summary>
+  /// <param name="results">Последовательность результатов.</param>
+  /// <param name="errorMessageSeparator">Разделитель между сообщениями ошибок.</param>
+  /// <returns>Успех, если все результаты успешны; иначе — неуспех с агрегированным сообщением.</returns>
   public static Result Combine(IEnumerable<Result> results, string errorMessageSeparator = "\n")
   {
     ArgumentNullException.ThrowIfNull(results);
@@ -22,6 +28,10 @@ public partial struct Result
       : Failure(string.Join(errorMessageSeparator, failures));
   }
 
+  /// <summary>
+  /// Объединяет несколько типизированных результатов со строковыми ошибками,
+  /// возвращая массив успешных значений.
+  /// </summary>
   public static Result<T[]> Combine<T>(IEnumerable<Result<T>> results, string errorMessageSeparator = "\n")
   {
     ArgumentNullException.ThrowIfNull(results);
@@ -46,6 +56,10 @@ public partial struct Result
       : Failure<T[]>(string.Join(errorMessageSeparator, failures));
   }
 
+  /// <summary>
+  /// Объединяет несколько типизированных результатов с типизированными ошибками,
+  /// возвращая массив успешных значений или массив ошибок.
+  /// </summary>
   public static Result<T[], E[]> Combine<T, E>(IEnumerable<Result<T, E>> results)
   {
     ArgumentNullException.ThrowIfNull(results);
@@ -70,6 +84,10 @@ public partial struct Result
       : Failure<T[], E[]>([.. failures]);
   }
 
+  /// <summary>
+  /// Объединяет несколько unit-результатов с типизированными ошибками,
+  /// возвращая общий успех или массив ошибок.
+  /// </summary>
   public static UnitResult<E[]?> Combine<E>(IEnumerable<UnitResult<E>> results)
   {
     ArgumentNullException.ThrowIfNull(results);

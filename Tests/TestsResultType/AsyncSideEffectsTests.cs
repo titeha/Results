@@ -97,7 +97,7 @@ public class AsyncSideEffectsTests
         bool predicateExecuted = false;
 
         Result<int> result = await Result.Failure<int>("error")
-            .EnsureAsync(value =>
+            .EnsureAsync(_ =>
             {
                 predicateExecuted = true;
                 return Task.FromResult(true);

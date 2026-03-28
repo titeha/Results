@@ -3,6 +3,7 @@
 using FluentAssertions;
 
 using ResultType;
+using ResultType.Exceptions;
 
 using Xunit;
 
@@ -52,8 +53,8 @@ namespace TestsResultType
     [Fact]
     public void Can_create_a_generic_version__with_a_generic_error()
     {
-      Can_create_a_generic_version_with_a_generic_error_typed<MyErrorClass>();
-      Can_create_a_generic_version_with_a_generic_error_typed<MyErrorStruct>();
+      SuccessedResultTests.Can_create_a_generic_version_with_a_generic_error_typed<MyErrorClass>();
+      SuccessedResultTests.Can_create_a_generic_version_with_a_generic_error_typed<MyErrorStruct>();
     }
 
     [Fact]
@@ -95,7 +96,7 @@ namespace TestsResultType
       action.Should().Throw<ResultSuccessException>();
     }
 
-    private void Can_create_a_generic_version_with_a_generic_error_typed<E>()
+    private static void Can_create_a_generic_version_with_a_generic_error_typed<E>()
     {
       var myClass = new MyClass();
 
@@ -106,10 +107,10 @@ namespace TestsResultType
       result.Value.Should().Be(myClass);
     }
 
-    private class MyClass { }
+    private class MyClass;
 
-    private class MyErrorClass { }
+    private class MyErrorClass;
 
-    private struct MyErrorStruct { }
+    private struct MyErrorStruct;
   }
 }

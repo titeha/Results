@@ -1,26 +1,47 @@
-﻿using static ResultType.ResultCommonLogic;
+﻿using static ResultType.Internals.ResultCommonLogic;
 
 namespace ResultType
 {
-  public readonly partial struct Result : IResult
+  /// <summary>
+  /// Представляет результат выполнения операции без возвращаемого значения
+  /// со строковым описанием ошибки.
+  /// </summary>
+  /// <remarks>
+  /// <para>
+  /// Используйте <see cref="Result"/>, когда операция либо завершается успешно,
+  /// либо возвращает строковое сообщение об ошибке, но не производит полезного значения.
+  /// </para>
+  /// <para>
+  /// Для создания экземпляров рекомендуется использовать фабрики <c>Success</c>, <c>Failure</c>,
+  /// <c>Try</c> и <c>Combine</c>.
+  /// </para>
+  /// </remarks>
+  public readonly partial struct Result(bool isFailure, string? error) : IResult
   {
-    public bool IsFailure { get; }
+    /// <summary>
+    /// Признак ошибки при выполнении операции
+    /// </summary>
+    public bool IsFailure { get; } = ErrorStateGuard(isFailure, error);
 
+    /// <summary>
+    /// Признак успешного выполнения операции
+    /// </summary>
     public bool IsSuccess => !IsFailure;
 
-    private readonly string? _error;
+    private readonly string? _error = error;
 
+    /// <summary>
+    /// Строковое описание ошибки.
+    /// </summary>
+    /// <remarks>
+    /// Доступно только для неуспешного результата.
+    /// </remarks>
     public string? Error => GetErrorWithSuccessGuard(IsFailure, _error);
 
-    public Result(bool isFailure, string? error)
-    {
-      IsFailure = ErrorStateGuard(isFailure, error);
-      _error = error;
-    }
-
-    public static implicit operator UnitResult<string?>(Result result) =>
-      result.IsSuccess ? UnitResult.Success<string>() : UnitResult.Failure(result.Error);
-
+    /// <summary>
+    /// Неявное преобразование типа Result в признак успешного или нет выполнения операции
+    /// </summary>
+    /// <param name="result">Значение результата</param>
     public static implicit operator bool(Result result) => result.IsSuccess;
   }
 }

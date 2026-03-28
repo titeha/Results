@@ -11,14 +11,6 @@ namespace TestsResultType
   public class ResultTest
   {
     [Fact]
-    public void Success_argument_is_null_Success_result_expected()
-    {
-      Result result = Result.Success<string>(null!);
-
-      result.IsSuccess.Should().BeTrue();
-    }
-
-    [Fact]
     public void Fail_argument_is_default_Fail_result_expected()
     {
       Result<string, int> result = Result.Failure<string, int>(0);

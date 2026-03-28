@@ -2,6 +2,9 @@ namespace ResultType;
 
 public readonly partial struct Result
 {
+  /// <summary>
+  /// Выполняет побочный эффект только для успешного результата, не изменяя сам результат.
+  /// </summary>
   public readonly Result Tap(Action action)
   {
     ArgumentNullException.ThrowIfNull(action);
@@ -12,6 +15,9 @@ public readonly partial struct Result
     return this;
   }
 
+  /// <summary>
+  /// Выполняет побочный эффект только для неуспешного результата, не изменяя сам результат.
+  /// </summary>
   public readonly Result TapError(Action<string?> action)
   {
     ArgumentNullException.ThrowIfNull(action);
@@ -25,6 +31,9 @@ public readonly partial struct Result
 
 public readonly partial struct Result<T>
 {
+  /// <summary>
+  /// Выполняет побочный эффект только для успешного результата, не изменяя сам результат.
+  /// </summary>
   public readonly Result<T> Tap(Action<T?> action)
   {
     ArgumentNullException.ThrowIfNull(action);
@@ -35,6 +44,9 @@ public readonly partial struct Result<T>
     return this;
   }
 
+  /// <summary>
+  /// Выполняет побочный эффект только для неуспешного результата, не изменяя сам результат.
+  /// </summary>
   public readonly Result<T> TapError(Action<string?> action)
   {
     ArgumentNullException.ThrowIfNull(action);
@@ -48,6 +60,9 @@ public readonly partial struct Result<T>
 
 public readonly partial struct Result<T, E>
 {
+  /// <summary>
+  /// Выполняет побочный эффект только для успешного результата, не изменяя сам результат.
+  /// </summary>
   public readonly Result<T, E> Tap(Action<T?> action)
   {
     ArgumentNullException.ThrowIfNull(action);
@@ -58,6 +73,9 @@ public readonly partial struct Result<T, E>
     return this;
   }
 
+  /// <summary>
+  /// Выполняет побочный эффект только для неуспешного результата, не изменяя сам результат.
+  /// </summary>
   public readonly Result<T, E> TapError(Action<E?> action)
   {
     ArgumentNullException.ThrowIfNull(action);
@@ -71,6 +89,9 @@ public readonly partial struct Result<T, E>
 
 public readonly partial struct UnitResult<E>
 {
+  /// <summary>
+  /// Выполняет побочный эффект только для успешного результата, не изменяя сам результат.
+  /// </summary>
   public readonly UnitResult<E> Tap(Action action)
   {
     ArgumentNullException.ThrowIfNull(action);
@@ -81,6 +102,9 @@ public readonly partial struct UnitResult<E>
     return this;
   }
 
+  /// <summary>
+  /// Выполняет побочный эффект только для неуспешного результата, не изменяя сам результат.
+  /// </summary>
   public readonly UnitResult<E> TapError(Action<E?> action)
   {
     ArgumentNullException.ThrowIfNull(action);
